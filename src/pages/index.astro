@@ -18,7 +18,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
   <section>
     <h2 class="text-xs font-medium text-(--color-text-muted) uppercase tracking-widest mb-8">최근 글</h2>
-    <ul class="space-y-5">
+    <ul class="space-y-4">
       {posts.map((post) => {
         const date = new Date(post.data.date).toLocaleDateString('ko-KR', {
           year: 'numeric',
@@ -27,11 +27,14 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         });
         return (
           <li>
-            <a href={`/blog/${post.id}`} class="group block">
-              <h3 class="text-base font-medium group-hover:text-(--color-text-muted) transition-colors leading-snug">
+            <a href={`/blog/${post.id}`} class="group block border border-(--color-border) rounded-lg p-5 bg-(--color-surface) hover:border-(--color-text-muted) transition-colors">
+              <h3 class="text-base font-medium leading-snug">
                 {post.data.title}
               </h3>
-              <time class="text-xs text-(--color-text-muted) mt-0.5 block">{date}</time>
+              {post.data.description && (
+                <p class="text-sm text-(--color-text-muted) mt-1.5 leading-relaxed line-clamp-1">{post.data.description}</p>
+              )}
+              <time class="text-sm text-(--color-text-muted) mt-2 block">{date}</time>
             </a>
           </li>
         );

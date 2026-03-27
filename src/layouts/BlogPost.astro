@@ -23,7 +23,7 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
 <BaseLayout title={title} description={description}>
   <article class="mt-6">
     <header class="mb-10 pb-8 border-b border-(--color-border)">
-      <h1 class="text-[1.75rem] font-bold leading-snug tracking-tight mb-3">{title}</h1>
+      <h1 class="text-[2rem] font-bold leading-snug tracking-tight mb-3">{title}</h1>
       <div class="flex items-center gap-3 text-sm text-(--color-text-muted)">
         <time>{formattedDate}</time>
         {categories.length > 0 && (
@@ -69,8 +69,8 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
 <style is:global>
   .blog-content {
     font-size: 1rem;
-    line-height: 2;
-    color: #1c1917;
+    line-height: 1.8;
+    color: #1a1a1a;
   }
 
   .blog-content p {
@@ -94,7 +94,7 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
     margin-top: 2.5em;
     margin-bottom: 0.8em;
     padding-bottom: 0.4em;
-    border-bottom: 1px solid #e7e5e4;
+    border-bottom: 1px solid #e5e5e3;
     letter-spacing: -0.02em;
   }
 
@@ -116,10 +116,10 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
 
   .blog-content blockquote {
     font-style: normal;
-    border-left: 3px solid #d6d3d1;
+    border-left: 3px solid #e5e5e3;
     padding-left: 1.25em;
     margin: 2em 0;
-    color: #78716c;
+    color: #555;
   }
 
   .blog-content blockquote p {
@@ -147,20 +147,22 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
 
   .blog-content hr {
     border: none;
-    border-top: 1px solid #e7e5e4;
+    border-top: 1px solid #e5e5e3;
     margin: 3em 0;
   }
 
   .blog-content code {
-    font-size: 0.875em;
-    background: #f5f5f4;
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background: #f4f4f2;
     padding: 0.2em 0.4em;
     border-radius: 0.25rem;
-    font-weight: 500;
+    font-weight: 400;
   }
 
   .blog-content pre {
-    background: #1c1917;
+    background: #f4f4f2;
+    border: 1px solid #e5e5e3;
     border-radius: 0.5rem;
     padding: 1.25em 1.5em;
     overflow-x: auto;
@@ -170,8 +172,9 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
   .blog-content pre code {
     background: none;
     padding: 0;
+    font-family: var(--font-mono);
     font-size: 0.85em;
-    color: #e7e5e4;
+    color: #1a1a1a;
     font-weight: 400;
   }
 
@@ -197,13 +200,13 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
 
   .blog-content th {
     font-weight: 600;
-    border-bottom: 2px solid #e7e5e4;
+    border-bottom: 2px solid #e5e5e3;
     padding: 0.5em 1em;
     text-align: left;
   }
 
   .blog-content td {
-    border-bottom: 1px solid #e7e5e4;
+    border-bottom: 1px solid #e5e5e3;
     padding: 0.5em 1em;
   }
 </style>

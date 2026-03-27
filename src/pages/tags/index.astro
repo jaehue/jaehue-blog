@@ -20,8 +20,8 @@ const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
     {sortedTags.map(([tag, count]) => (
       <a
         href={`/tags/${encodeURIComponent(tag)}`}
-        class="text-sm px-3 py-1.5 border border-(--color-border) rounded-full
-               hover:border-(--color-accent) hover:text-(--color-accent) transition-colors"
+        class="text-sm px-3 py-1.5 border border-(--color-border) rounded-md
+               hover:border-(--color-text-muted) hover:text-(--color-text) transition-colors"
       >
         {tag} <span class="text-(--color-text-muted) text-xs ml-1">{count}</span>
       </a>

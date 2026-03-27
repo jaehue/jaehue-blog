@@ -193,22 +193,22 @@ export default function Comments({ postSlug }: { postSlug: string }) {
   };
 
   return (
-    <section style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e7e5e4' }}>
-      <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#1c1917' }}>
+    <section style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e5e5e3' }}>
+      <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#1a1a1a' }}>
         댓글
       </h2>
 
       {loading ? (
-        <p style={{ color: '#78716c', fontSize: '0.875rem' }}>댓글을 불러오는 중...</p>
+        <p style={{ color: '#888', fontSize: '0.875rem' }}>댓글을 불러오는 중...</p>
       ) : !configured ? (
-        <p style={{ color: '#78716c', fontSize: '0.875rem' }}>
+        <p style={{ color: '#888', fontSize: '0.875rem' }}>
           댓글 기능이 아직 설정되지 않았습니다.
         </p>
       ) : (
         <>
           {/* Comment list */}
           {comments.length === 0 ? (
-            <p style={{ color: '#78716c', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+            <p style={{ color: '#888', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
               아직 댓글이 없습니다. 첫 번째 댓글을 남겨보세요!
             </p>
           ) : (
@@ -218,7 +218,7 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                   key={comment.id}
                   style={{
                     padding: '1rem 0',
-                    borderBottom: '1px solid #e7e5e4',
+                    borderBottom: '1px solid #e5e5e3',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.5rem' }}>
@@ -235,26 +235,26 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                           width: 32,
                           height: 32,
                           borderRadius: '50%',
-                          background: '#e7e5e4',
+                          background: '#e5e5e3',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
                           fontSize: '0.75rem',
-                          color: '#78716c',
+                          color: '#888',
                         }}
                       >
                         {comment.author[0]}
                       </div>
                     )}
                     <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                      <span style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1c1917' }}>
+                      <span style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1a1a1a' }}>
                         {comment.author}
                       </span>
                       {comment.isGuest && (
-                        <span style={{ fontSize: '0.75rem', color: '#78716c' }}>(게스트)</span>
+                        <span style={{ fontSize: '0.75rem', color: '#888' }}>(게스트)</span>
                       )}
                       {comment.createdAt && (
-                        <span style={{ fontSize: '0.75rem', color: '#78716c' }}>
+                        <span style={{ fontSize: '0.75rem', color: '#888' }}>
                           {formatRelativeTime(comment.createdAt.seconds)}
                         </span>
                       )}
@@ -266,7 +266,7 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                           marginLeft: 'auto',
                           background: 'none',
                           border: 'none',
-                          color: '#78716c',
+                          color: '#888',
                           fontSize: '0.75rem',
                           cursor: 'pointer',
                           padding: '0.25rem 0.5rem',
@@ -281,7 +281,7 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                       margin: 0,
                       fontSize: '0.9375rem',
                       lineHeight: 1.7,
-                      color: '#1c1917',
+                      color: '#1a1a1a',
                       whiteSpace: 'pre-wrap',
                     }}
                   >
@@ -312,14 +312,14 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                       referrerPolicy="no-referrer"
                     />
                   )}
-                  <span style={{ fontSize: '0.875rem', color: '#1c1917' }}>{user.displayName}</span>
+                  <span style={{ fontSize: '0.875rem', color: '#1a1a1a' }}>{user.displayName}</span>
                 </div>
                 <button
                   onClick={handleLogout}
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#78716c',
+                    color: '#888',
                     fontSize: '0.8125rem',
                     cursor: 'pointer',
                   }}
@@ -336,18 +336,18 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                   style={{
                     width: '100%',
                     padding: '0.75rem',
-                    border: '1px solid #e7e5e4',
+                    border: '1px solid #e5e5e3',
                     borderRadius: '0.5rem',
                     fontSize: '0.9375rem',
                     lineHeight: 1.6,
                     resize: 'vertical',
-                    background: '#f5f5f4',
-                    color: '#1c1917',
+                    background: '#fff',
+                    color: '#1a1a1a',
                     outline: 'none',
                     boxSizing: 'border-box',
                   }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = '#78716c')}
-                  onBlur={(e) => (e.currentTarget.style.borderColor = '#e7e5e4')}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = '#888')}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = '#e5e5e3')}
                 />
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
                   <button
@@ -355,8 +355,8 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                     disabled={!content.trim() || submitting}
                     style={{
                       padding: '0.5rem 1.25rem',
-                      background: content.trim() && !submitting ? '#1c1917' : '#e7e5e4',
-                      color: content.trim() && !submitting ? '#fff' : '#78716c',
+                      background: content.trim() && !submitting ? '#1a1a1a' : '#e5e5e3',
+                      color: content.trim() && !submitting ? '#fff' : '#888',
                       border: 'none',
                       borderRadius: '0.375rem',
                       fontSize: '0.875rem',
@@ -378,11 +378,11 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                   alignItems: 'center',
                   gap: '0.5rem',
                   padding: '0.625rem 1.25rem',
-                  background: '#f5f5f4',
-                  border: '1px solid #e7e5e4',
+                  background: '#fff',
+                  border: '1px solid #e5e5e3',
                   borderRadius: '0.5rem',
                   fontSize: '0.875rem',
-                  color: '#1c1917',
+                  color: '#1a1a1a',
                   cursor: 'pointer',
                   fontWeight: 500,
                 }}
@@ -398,9 +398,9 @@ export default function Comments({ postSlug }: { postSlug: string }) {
 
               {/* Guest comment divider and toggle */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', margin: '1rem 0' }}>
-                <div style={{ flex: 1, height: '1px', background: '#e7e5e4' }} />
-                <span style={{ fontSize: '0.8125rem', color: '#78716c', whiteSpace: 'nowrap' }}>또는</span>
-                <div style={{ flex: 1, height: '1px', background: '#e7e5e4' }} />
+                <div style={{ flex: 1, height: '1px', background: '#e5e5e3' }} />
+                <span style={{ fontSize: '0.8125rem', color: '#888', whiteSpace: 'nowrap' }}>또는</span>
+                <div style={{ flex: 1, height: '1px', background: '#e5e5e3' }} />
               </div>
 
               {!guestMode ? (
@@ -409,7 +409,7 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                   style={{
                     background: 'none',
                     border: 'none',
-                    color: '#78716c',
+                    color: '#888',
                     fontSize: '0.875rem',
                     cursor: 'pointer',
                     padding: 0,
@@ -428,15 +428,15 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                       style={{
                         flex: 1,
                         padding: '0.5rem 0.75rem',
-                        border: '1px solid #e7e5e4',
+                        border: '1px solid #e5e5e3',
                         borderRadius: '0.375rem',
                         fontSize: '0.875rem',
-                        background: '#f5f5f4',
-                        color: '#1c1917',
+                        background: '#fff',
+                        color: '#1a1a1a',
                         outline: 'none',
                       }}
-                      onFocus={(e) => (e.currentTarget.style.borderColor = '#78716c')}
-                      onBlur={(e) => (e.currentTarget.style.borderColor = '#e7e5e4')}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = '#888')}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = '#e5e5e3')}
                     />
                     <input
                       type="password"
@@ -446,15 +446,15 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                       style={{
                         flex: 1,
                         padding: '0.5rem 0.75rem',
-                        border: '1px solid #e7e5e4',
+                        border: '1px solid #e5e5e3',
                         borderRadius: '0.375rem',
                         fontSize: '0.875rem',
-                        background: '#f5f5f4',
-                        color: '#1c1917',
+                        background: '#fff',
+                        color: '#1a1a1a',
                         outline: 'none',
                       }}
-                      onFocus={(e) => (e.currentTarget.style.borderColor = '#78716c')}
-                      onBlur={(e) => (e.currentTarget.style.borderColor = '#e7e5e4')}
+                      onFocus={(e) => (e.currentTarget.style.borderColor = '#888')}
+                      onBlur={(e) => (e.currentTarget.style.borderColor = '#e5e5e3')}
                     />
                   </div>
                   <textarea
@@ -465,18 +465,18 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                     style={{
                       width: '100%',
                       padding: '0.75rem',
-                      border: '1px solid #e7e5e4',
+                      border: '1px solid #e5e5e3',
                       borderRadius: '0.5rem',
                       fontSize: '0.9375rem',
                       lineHeight: 1.6,
                       resize: 'vertical',
-                      background: '#f5f5f4',
-                      color: '#1c1917',
+                      background: '#fff',
+                      color: '#1a1a1a',
                       outline: 'none',
                       boxSizing: 'border-box',
                     }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = '#78716c')}
-                    onBlur={(e) => (e.currentTarget.style.borderColor = '#e7e5e4')}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = '#888')}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = '#e5e5e3')}
                   />
                   <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
                     <button
@@ -484,8 +484,8 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                       disabled={!content.trim() || !guestName.trim() || guestPassword.length < 4 || submitting}
                       style={{
                         padding: '0.5rem 1.25rem',
-                        background: content.trim() && guestName.trim() && guestPassword.length >= 4 && !submitting ? '#1c1917' : '#e7e5e4',
-                        color: content.trim() && guestName.trim() && guestPassword.length >= 4 && !submitting ? '#fff' : '#78716c',
+                        background: content.trim() && guestName.trim() && guestPassword.length >= 4 && !submitting ? '#1a1a1a' : '#e5e5e3',
+                        color: content.trim() && guestName.trim() && guestPassword.length >= 4 && !submitting ? '#fff' : '#888',
                         border: 'none',
                         borderRadius: '0.375rem',
                         fontSize: '0.875rem',

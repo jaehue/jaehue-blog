@@ -3,13 +3,14 @@
 
 @theme {
   --color-bg: #fafaf9;
-  --color-text: #1c1917;
-  --color-text-muted: #78716c;
+  --color-text: #1a1a1a;
+  --color-text-muted: #888;
   --color-accent: #292524;
   --color-accent-hover: #0c0a09;
-  --color-border: #e7e5e4;
-  --color-surface: #f5f5f4;
+  --color-border: #e5e5e3;
+  --color-surface: #fff;
   --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
 }
 
 html {
