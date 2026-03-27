@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+const tagCounts = posts.reduce((acc, post) => {
+  (post.data.tags || []).forEach((tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+  });
+  return acc;
+}, {} as Record<string, number>);
+
+const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="태그 — 장재휴">
+  <h1 class="text-2xl font-bold mb-10">태그</h1>
+  <div class="flex flex-wrap gap-3">
+    {sortedTags.map(([tag, count]) => (
+      <a
+        href={`/tags/${encodeURIComponent(tag)}`}
+        class="text-sm px-3 py-1.5 border border-(--color-border) rounded-full
+               hover:border-(--color-accent) hover:text-(--color-accent) transition-colors"
+      >
+        {tag} <span class="text-(--color-text-muted) text-xs ml-1">{count}</span>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

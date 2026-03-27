@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const grouped = posts.reduce((acc, post) => {
+  const year = new Date(post.data.date).getFullYear().toString();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(post);
+  return acc;
+}, {} as Record<string, typeof posts>);
+---
+
+<BaseLayout title="글 — 장재휴">
+  <h1 class="text-2xl font-bold tracking-tight mt-4 mb-12">글</h1>
+
+  {Object.entries(grouped)
+    .sort(([a], [b]) => Number(b) - Number(a))
+    .map(([year, yearPosts]) => (
+      <section class="mb-12">
+        <h2 class="text-xs font-medium text-(--color-text-muted) tracking-widest mb-5">{year}</h2>
+        <ul class="space-y-2.5">
+          {yearPosts.map((post) => {
+            const date = new Date(post.data.date).toLocaleDateString('ko-KR', {
+              month: 'numeric',
+              day: 'numeric',
+            });
+            return (
+              <li class="flex items-baseline gap-4">
+                <time class="text-xs text-(--color-text-muted) w-10 shrink-0 tabular-nums">{date}</time>
+                <a href={`/blog/${post.id}`} class="text-[15px] hover:text-(--color-text-muted) transition-colors leading-snug">
+                  {post.data.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))}
+</BaseLayout>

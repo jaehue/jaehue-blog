@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-bg: #fafaf9;
+  --color-text: #1c1917;
+  --color-text-muted: #78716c;
+  --color-accent: #292524;
+  --color-accent-hover: #0c0a09;
+  --color-border: #e7e5e4;
+  --color-surface: #f5f5f4;
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+::selection {
+  background: #292524;
+  color: #fafaf9;
+}

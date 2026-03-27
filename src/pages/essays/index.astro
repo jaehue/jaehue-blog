@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { ESSAY_PARTS } from '../../consts';
+
+const posts = await getCollection('blog', ({ data }) => data.essay && !data.draft);
+
+const grouped = ESSAY_PARTS.map((part) => ({
+  ...part,
+  posts: posts
+    .filter((p) => p.data.essay?.part === part.part)
+    .sort((a, b) => (a.data.essay?.order || 0) - (b.data.essay?.order || 0)),
+}));
+
+const totalEssays = posts.length;
+---
+
+<BaseLayout title="에세이집 — 장재휴">
+  <header class="mb-12">
+    <h1 class="text-3xl font-bold mb-2">에세이집</h1>
+    <p class="text-(--color-text-muted) text-sm">
+      2007년부터 지금까지, 1,000편의 글 중에서 골라낸 이야기.
+    </p>
+    {totalEssays > 0 && (
+      <p class="text-(--color-text-muted) text-xs mt-1">{totalEssays}편 수록</p>
+    )}
+  </header>
+
+  {totalEssays === 0 ? (
+    <p class="text-(--color-text-muted) italic">아직 에세이가 배정되지 않았습니다. 글의 frontmatter에 essay 필드를 추가하면 여기에 표시됩니다.</p>
+  ) : (
+    <div class="space-y-12">
+      {grouped.filter((g) => g.posts.length > 0).map((group) => (
+        <section>
+          <h2 class="text-lg font-bold">
+            {group.part}부: {group.name}
+          </h2>
+          <p class="text-sm text-(--color-text-muted) mb-4">{group.subtitle}</p>
+          <ul class="space-y-2 pl-4">
+            {group.posts.map((post, i) => (
+              <li class="flex items-baseline gap-3">
+                <span class="text-xs text-(--color-text-muted) w-6 shrink-0 text-right">{i + 1}.</span>
+                <a href={`/blog/${post.id}`} class="hover:text-(--color-accent) transition-colors">
+                  {post.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )}
+</BaseLayout>

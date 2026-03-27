@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 10);
+---
+
+<BaseLayout title="장재휴">
+  <section class="mt-8 mb-16">
+    <p class="text-2xl leading-relaxed tracking-tight">
+      코드를 짜서 서비스를 만들고,<br />
+      글을 써서 생각을 만들고,<br />
+      젬베를 쳐서 리듬을 만든다.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="text-xs font-medium text-(--color-text-muted) uppercase tracking-widest mb-8">최근 글</h2>
+    <ul class="space-y-5">
+      {posts.map((post) => {
+        const date = new Date(post.data.date).toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+        return (
+          <li>
+            <a href={`/blog/${post.id}`} class="group block">
+              <h3 class="text-base font-medium group-hover:text-(--color-text-muted) transition-colors leading-snug">
+                {post.data.title}
+              </h3>
+              <time class="text-xs text-(--color-text-muted) mt-0.5 block">{date}</time>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+    <div class="mt-10">
+      <a href="/blog" class="text-sm text-(--color-text-muted) hover:text-(--color-text) transition-colors">
+        모든 글 보기 →
+      </a>
+    </div>
+  </section>
+</BaseLayout>

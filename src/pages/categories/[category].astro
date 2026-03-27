@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const cats = [...new Set(posts.flatMap((p) => p.data.categories || []))].filter(Boolean);
+  return cats.map((cat) => ({
+    params: { category: cat },
+    props: {
+      category: cat,
+      posts: posts
+        .filter((p) => (p.data.categories || []).includes(cat))
+        .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+---
+
+<BaseLayout title={`${category} — 장재휴`}>
+  <h1 class="text-2xl font-bold mb-10">{category}</h1>
+  <ul class="space-y-4">
+    {posts.map((post: any) => {
+      const date = new Date(post.data.date).toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+      return (
+        <li class="flex items-baseline gap-3">
+          <time class="text-xs text-(--color-text-muted) w-20 shrink-0">{date}</time>
+          <a href={`/blog/${post.id}`} class="hover:text-(--color-accent) transition-colors">
+            {post.data.title}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</BaseLayout>
