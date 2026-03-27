@@ -1,0 +1,344 @@
+import { useEffect, useState, useCallback } from 'react';
+import type { User } from 'firebase/auth';
+
+interface Comment {
+  id: string;
+  postSlug: string;
+  author: string;
+  authorUid: string;
+  authorPhoto: string;
+  content: string;
+  createdAt: { seconds: number; nanoseconds: number } | null;
+  updatedAt: { seconds: number; nanoseconds: number } | null;
+}
+
+function formatRelativeTime(seconds: number): string {
+  const now = Date.now() / 1000;
+  const diff = now - seconds;
+
+  if (diff < 60) return '방금 전';
+  if (diff < 3600) return `${Math.floor(diff / 60)}분 전`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}시간 전`;
+  if (diff < 172800) return '어제';
+  if (diff < 604800) return `${Math.floor(diff / 86400)}일 전`;
+
+  const date = new Date(seconds * 1000);
+  return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+}
+
+export default function Comments({ postSlug }: { postSlug: string }) {
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [configured, setConfigured] = useState(false);
+
+  // Load Firebase modules dynamically
+  const getFirebaseModules = useCallback(async () => {
+    const { db, auth, isConfigured } = await import('../lib/firebase');
+    return { db, auth, isConfigured };
+  }, []);
+
+  // Load comments
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+
+    (async () => {
+      const { db, isConfigured } = await getFirebaseModules();
+      setConfigured(isConfigured);
+
+      if (!db || !isConfigured) {
+        setLoading(false);
+        return;
+      }
+
+      const { collection, query, where, orderBy, onSnapshot } = await import('firebase/firestore');
+      const q = query(
+        collection(db, 'comments'),
+        where('postSlug', '==', postSlug),
+        orderBy('createdAt', 'asc'),
+      );
+
+      unsubscribe = onSnapshot(
+        q,
+        (snapshot) => {
+          const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() } as Comment));
+          setComments(docs);
+          setLoading(false);
+        },
+        () => {
+          setLoading(false);
+        },
+      );
+    })();
+
+    return () => unsubscribe?.();
+  }, [postSlug, getFirebaseModules]);
+
+  // Auth state
+  useEffect(() => {
+    (async () => {
+      const { auth, isConfigured } = await getFirebaseModules();
+      if (!auth || !isConfigured) return;
+
+      const { onAuthStateChanged } = await import('firebase/auth');
+      const unsub = onAuthStateChanged(auth, setUser);
+      return () => unsub();
+    })();
+  }, [getFirebaseModules]);
+
+  const handleLogin = async () => {
+    const { auth } = await getFirebaseModules();
+    if (!auth) return;
+    const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth');
+    await signInWithPopup(auth, new GoogleAuthProvider());
+  };
+
+  const handleLogout = async () => {
+    const { auth } = await getFirebaseModules();
+    if (!auth) return;
+    const { signOut } = await import('firebase/auth');
+    await signOut(auth);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!content.trim() || !user) return;
+
+    const { db } = await getFirebaseModules();
+    if (!db) return;
+
+    setSubmitting(true);
+    try {
+      const { collection, addDoc, serverTimestamp } = await import('firebase/firestore');
+      await addDoc(collection(db, 'comments'), {
+        postSlug,
+        author: user.displayName || '익명',
+        authorUid: user.uid,
+        authorPhoto: user.photoURL || '',
+        content: content.trim(),
+        createdAt: serverTimestamp(),
+        updatedAt: null,
+      });
+      setContent('');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (commentId: string) => {
+    if (!confirm('댓글을 삭제하시겠습니까?')) return;
+
+    const { db } = await getFirebaseModules();
+    if (!db) return;
+
+    const { doc, deleteDoc } = await import('firebase/firestore');
+    await deleteDoc(doc(db, 'comments', commentId));
+  };
+
+  return (
+    <section style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e7e5e4' }}>
+      <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem', color: '#1c1917' }}>
+        댓글
+      </h2>
+
+      {loading ? (
+        <p style={{ color: '#78716c', fontSize: '0.875rem' }}>댓글을 불러오는 중...</p>
+      ) : !configured ? (
+        <p style={{ color: '#78716c', fontSize: '0.875rem' }}>
+          댓글 기능이 아직 설정되지 않았습니다.
+        </p>
+      ) : (
+        <>
+          {/* Comment list */}
+          {comments.length === 0 ? (
+            <p style={{ color: '#78716c', fontSize: '0.875rem', marginBottom: '1.5rem' }}>
+              아직 댓글이 없습니다. 첫 번째 댓글을 남겨보세요!
+            </p>
+          ) : (
+            <div style={{ marginBottom: '1.5rem' }}>
+              {comments.map((comment) => (
+                <div
+                  key={comment.id}
+                  style={{
+                    padding: '1rem 0',
+                    borderBottom: '1px solid #e7e5e4',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.625rem', marginBottom: '0.5rem' }}>
+                    {comment.authorPhoto ? (
+                      <img
+                        src={comment.authorPhoto}
+                        alt={comment.author}
+                        style={{ width: 32, height: 32, borderRadius: '50%' }}
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: '50%',
+                          background: '#e7e5e4',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '0.75rem',
+                          color: '#78716c',
+                        }}
+                      >
+                        {comment.author[0]}
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                      <span style={{ fontWeight: 600, fontSize: '0.875rem', color: '#1c1917' }}>
+                        {comment.author}
+                      </span>
+                      {comment.createdAt && (
+                        <span style={{ fontSize: '0.75rem', color: '#78716c' }}>
+                          {formatRelativeTime(comment.createdAt.seconds)}
+                        </span>
+                      )}
+                    </div>
+                    {user?.uid === comment.authorUid && (
+                      <button
+                        onClick={() => handleDelete(comment.id)}
+                        style={{
+                          marginLeft: 'auto',
+                          background: 'none',
+                          border: 'none',
+                          color: '#78716c',
+                          fontSize: '0.75rem',
+                          cursor: 'pointer',
+                          padding: '0.25rem 0.5rem',
+                        }}
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </div>
+                  <p
+                    style={{
+                      margin: 0,
+                      fontSize: '0.9375rem',
+                      lineHeight: 1.7,
+                      color: '#1c1917',
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {comment.content}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Auth + Form */}
+          {user ? (
+            <div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '0.75rem',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  {user.photoURL && (
+                    <img
+                      src={user.photoURL}
+                      alt=""
+                      style={{ width: 24, height: 24, borderRadius: '50%' }}
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
+                  <span style={{ fontSize: '0.875rem', color: '#1c1917' }}>{user.displayName}</span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#78716c',
+                    fontSize: '0.8125rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  로그아웃
+                </button>
+              </div>
+              <form onSubmit={handleSubmit}>
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="댓글을 남겨보세요..."
+                  rows={3}
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem',
+                    border: '1px solid #e7e5e4',
+                    borderRadius: '0.5rem',
+                    fontSize: '0.9375rem',
+                    lineHeight: 1.6,
+                    resize: 'vertical',
+                    background: '#f5f5f4',
+                    color: '#1c1917',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = '#78716c')}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = '#e7e5e4')}
+                />
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+                  <button
+                    type="submit"
+                    disabled={!content.trim() || submitting}
+                    style={{
+                      padding: '0.5rem 1.25rem',
+                      background: content.trim() && !submitting ? '#1c1917' : '#e7e5e4',
+                      color: content.trim() && !submitting ? '#fff' : '#78716c',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      fontSize: '0.875rem',
+                      fontWeight: 600,
+                      cursor: content.trim() && !submitting ? 'pointer' : 'default',
+                    }}
+                  >
+                    {submitting ? '작성 중...' : '댓글 작성'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          ) : (
+            <button
+              onClick={handleLogin}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.625rem 1.25rem',
+                background: '#f5f5f4',
+                border: '1px solid #e7e5e4',
+                borderRadius: '0.5rem',
+                fontSize: '0.875rem',
+                color: '#1c1917',
+                cursor: 'pointer',
+                fontWeight: 500,
+              }}
+            >
+              <svg width="18" height="18" viewBox="0 0 48 48">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+              </svg>
+              Google로 로그인하여 댓글을 남기세요
+            </button>
+          )}
+        </>
+      )}
+    </section>
+  );
+}

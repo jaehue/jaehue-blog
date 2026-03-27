@@ -1,5 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import Comments from '../components/Comments.tsx';
 
 interface Props {
   title: string;
@@ -7,9 +8,10 @@ interface Props {
   date: string;
   categories?: string[];
   tags?: string[];
+  postSlug?: string;
 }
 
-const { title, description, date, categories = [], tags = [] } = Astro.props;
+const { title, description, date, categories = [], tags = [], postSlug } = Astro.props;
 
 const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
   year: 'numeric',
@@ -59,6 +61,8 @@ const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
         </div>
       </div>
     )}
+
+    {postSlug && <Comments postSlug={postSlug} client:visible />}
   </article>
 </BaseLayout>
 

@@ -20,6 +20,7 @@ const { Content } = await render(post);
   date={post.data.date}
   categories={post.data.categories}
   tags={post.data.tags}
+  postSlug={post.id}
 >
   <Content />
 </BlogPost>
