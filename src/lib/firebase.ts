@@ -2,15 +2,14 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
-// Firebase 설정
-// Firebase Console > 프로젝트 설정 > 웹 앱에서 config 값을 복사하여 아래에 채워주세요.
 const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
-  authDomain: 'YOUR_PROJECT.firebaseapp.com',
-  projectId: 'YOUR_PROJECT_ID',
-  storageBucket: 'YOUR_PROJECT.firebasestorage.app',
-  messagingSenderId: 'YOUR_SENDER_ID',
-  appId: 'YOUR_APP_ID',
+  apiKey: 'AIzaSyDx_2PWF_BMHs8U9XrHj48OlrorXxdUSMw',
+  authDomain: 'jaehue-blog.firebaseapp.com',
+  projectId: 'jaehue-blog',
+  storageBucket: 'jaehue-blog.firebasestorage.app',
+  messagingSenderId: '900107196396',
+  appId: '1:900107196396:web:1aad0f4b3e2b75d23012c9',
+  measurementId: 'G-5W55HRRRFM',
 };
 
 const isConfigured =
