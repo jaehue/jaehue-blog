@@ -1,3 +1,8 @@
+// Firestore Security Rules:
+// allow read: if true;
+// allow create: if true;  (게스트 허용)
+// allow update, delete: if true;  (클라이언트에서 비밀번호 해시 검증)
+
 import { initializeApp, getApps } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
