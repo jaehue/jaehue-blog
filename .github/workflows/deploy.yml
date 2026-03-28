@@ -21,4 +21,4 @@ jobs:
           personal_token: ${{ secrets.DEPLOY_TOKEN }}
           external_repository: jaehue/jaehue.github.io
           publish_dir: ./dist
-          publish_branch: main
+          publish_branch: master
