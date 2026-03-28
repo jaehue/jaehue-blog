@@ -7,7 +7,7 @@ draft: false
 categories:
   - IT
 tags:
-  - golang
+  - "golang"
 ---
 
 Go에는 다른 대중적인 언어와 다른 개념들이 좀 있다.

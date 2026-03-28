@@ -5,8 +5,7 @@ draft: false
 categories:
   - 묵상
 tags:
-  - 여행
-  - 아웃리치
+  - "선교"
 ---
 
 <img src="/images/uganda/africa.jpg" width=300 />

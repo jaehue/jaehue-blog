@@ -5,7 +5,7 @@ draft: false
 categories:
   - IT
 tags:
-  - golang
+  - "golang"
 ---
 
 > [http://blog.remotty.com](http://blog.remotty.com/blog/2015/08/15/golangeuro-anjeonhan-seobiseu-mandeulgi/)에 게시한 글을 Go 언어에 대해 발행한 글을 수집하는 차원에서 이곳으로 옮겨왔다.

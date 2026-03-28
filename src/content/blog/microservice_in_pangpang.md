@@ -5,7 +5,7 @@ title: "Microservice in PangPang"
 categories:
   - IT
 tags:
-  - microservice
+  - "마이크로서비스"
 ---
 
 > *사내 세미나 전 생각 정리를 위한 글*

@@ -2,6 +2,8 @@
 date: "2017-02-09T09:18:26+08:00"
 title: "Go My Way"
 draft: true
+tags:
+  - "golang"
 ---
 
 # Go My Way #1 - 웹 어플리케이션

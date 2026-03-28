@@ -5,7 +5,7 @@ date: "2017-06-14T00:00:00+08:00"
 categories:
   - IT
 tags:
-  - golang
+  - "golang"
 ---
 
 **Go My Way**는 Go 언어로 웹 어플리케이션을 작성할 때 선호하는 나만의 방식을 3편에 걸쳐서 소개하는 글이다.

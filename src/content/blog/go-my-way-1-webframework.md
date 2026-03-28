@@ -5,7 +5,7 @@ draft: false
 categories:
   - IT
 tags:
-  - golang
+  - "golang"
 ---
 
 루비의 Ruby on Rails, 자바의 Spring, 파이썬의 Django, 노드의 Express.

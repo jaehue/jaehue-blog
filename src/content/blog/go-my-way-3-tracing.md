@@ -5,7 +5,8 @@ title: "Go My Way #3 - 트레이싱"
 categories:
   - IT
 tags:
-  - golang
+  - "golang"
+  - "마이크로서비스"
 ---
 **Go My Way**는 Go 언어로 웹 어플리케이션을 작성할 때 선호하는 나만의 방식을 3편에 걸쳐서 소개하는 글이다.
 이전 글은 읽지 않았다면 아래 링크를 참조하기 바란다.

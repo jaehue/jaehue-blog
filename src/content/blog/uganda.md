@@ -2,6 +2,8 @@
 title: "우간다에서의 생각들"
 date: 2018-02-15T09:42:36+08:00
 draft: true
+tags:
+  - "선교"
 ---
 
 <img src="/images/uganda/africa.jpg" width=300 />

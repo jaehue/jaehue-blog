@@ -6,8 +6,7 @@ thumbnail: ""
 categories:
   - 묵상
 tags:
-  - 여행
-  - 아웃리치
+  - "선교"
 ---
 
 ![](/images/manado-diary/IMG_2410.JPG)

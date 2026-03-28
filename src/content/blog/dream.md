@@ -6,7 +6,7 @@ thumbnail: ""
 categories:
   - "묵상"
 tags:
-  - ""
+  - "꿈"
 ---
 
 어릴 때 난 꿈이 없었다.
