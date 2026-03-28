@@ -14,7 +14,7 @@ const firebaseConfig = {
   storageBucket: 'jaehue-blog.firebasestorage.app',
   messagingSenderId: '900107196396',
   appId: '1:900107196396:web:1aad0f4b3e2b75d23012c9',
-  measurementId: 'G-5W55HRRRFM',
+  measurementId: 'G-FD7X075YBV',
 };
 
 const isConfigured =
