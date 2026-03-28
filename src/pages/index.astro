@@ -27,7 +27,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
         });
         return (
           <li>
-            <a href={`/blog/${post.id}`} class="group block border border-(--color-border) rounded-lg p-5 bg-(--color-surface) hover:border-(--color-text-muted) transition-colors">
+            <a href={`/post/${post.id}`} class="group block border border-(--color-border) rounded-lg p-5 bg-(--color-surface) hover:border-(--color-text-muted) transition-colors">
               <h3 class="text-base font-medium leading-snug">
                 {post.data.title}
               </h3>
@@ -41,7 +41,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
       })}
     </ul>
     <div class="mt-10">
-      <a href="/blog" class="text-sm text-(--color-text-muted) hover:text-(--color-text) transition-colors">
+      <a href="/post" class="text-sm text-(--color-text-muted) hover:text-(--color-text) transition-colors">
         모든 글 보기 →
       </a>
     </div>

@@ -40,7 +40,7 @@ const totalEssays = posts.length;
             {group.posts.map((post, i) => (
               <li class="flex items-baseline gap-3">
                 <span class="text-xs text-(--color-text-muted) w-6 shrink-0 text-right">{i + 1}.</span>
-                <a href={`/blog/${post.id}`} class="hover:text-(--color-accent) transition-colors">
+                <a href={`/post/${post.id}`} class="hover:text-(--color-accent) transition-colors">
                   {post.data.title}
                 </a>
               </li>

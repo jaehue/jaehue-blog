@@ -31,7 +31,7 @@ const { tag, posts } = Astro.props;
       return (
         <li class="flex items-baseline gap-3">
           <time class="text-xs text-(--color-text-muted) w-20 shrink-0">{date}</time>
-          <a href={`/blog/${post.id}`} class="hover:text-(--color-accent) transition-colors">
+          <a href={`/post/${post.id}`} class="hover:text-(--color-accent) transition-colors">
             {post.data.title}
           </a>
         </li>
