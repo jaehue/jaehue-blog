@@ -377,7 +377,7 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '0.5rem',
-                  padding: '0.625rem 1.25rem',
+                  padding: '0.625rem 1rem',
                   background: '#fff',
                   border: '1px solid #e5e5e3',
                   borderRadius: '0.5rem',
@@ -385,9 +385,13 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                   color: '#1a1a1a',
                   cursor: 'pointer',
                   fontWeight: 500,
+                  maxWidth: '100%',
+                  boxSizing: 'border-box',
+                  textAlign: 'left',
+                  lineHeight: 1.4,
                 }}
               >
-                <svg width="18" height="18" viewBox="0 0 48 48">
+                <svg width="18" height="18" viewBox="0 0 48 48" style={{ flexShrink: 0 }}>
                   <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                   <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
                   <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
@@ -419,14 +423,15 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                 </button>
               ) : (
                 <form onSubmit={handleSubmit}>
-                  <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
                     <input
                       type="text"
                       value={guestName}
                       onChange={(e) => setGuestName(e.target.value)}
                       placeholder="이름 (필수)"
                       style={{
-                        flex: 1,
+                        flex: '1 1 140px',
+                        minWidth: 0,
                         padding: '0.5rem 0.75rem',
                         border: '1px solid #e5e5e3',
                         borderRadius: '0.375rem',
@@ -434,6 +439,7 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                         background: '#fff',
                         color: '#1a1a1a',
                         outline: 'none',
+                        boxSizing: 'border-box',
                       }}
                       onFocus={(e) => (e.currentTarget.style.borderColor = '#888')}
                       onBlur={(e) => (e.currentTarget.style.borderColor = '#e5e5e3')}
@@ -444,7 +450,8 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                       onChange={(e) => setGuestPassword(e.target.value)}
                       placeholder="비밀번호 (4자 이상)"
                       style={{
-                        flex: 1,
+                        flex: '1 1 140px',
+                        minWidth: 0,
                         padding: '0.5rem 0.75rem',
                         border: '1px solid #e5e5e3',
                         borderRadius: '0.375rem',
@@ -452,6 +459,7 @@ export default function Comments({ postSlug }: { postSlug: string }) {
                         background: '#fff',
                         color: '#1a1a1a',
                         outline: 'none',
+                        boxSizing: 'border-box',
                       }}
                       onFocus={(e) => (e.currentTarget.style.borderColor = '#888')}
                       onBlur={(e) => (e.currentTarget.style.borderColor = '#e5e5e3')}
