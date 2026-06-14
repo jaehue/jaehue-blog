@@ -7,9 +7,13 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/seo-check.mjs",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "seo": "node scripts/seo-fill.mjs",
+    "seo:check": "node scripts/seo-check.mjs",
+    "seo:install": "git config core.hooksPath .githooks && echo '✅ pre-commit 훅 활성화됨'"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",

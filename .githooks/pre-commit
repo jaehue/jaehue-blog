@@ -1,0 +1,17 @@
+#!/bin/sh
+# 새로 추가/수정된 블로그 글의 빈 description을 claude로 자동 생성해 채운다.
+# 활성화: git config core.hooksPath .githooks  (또는 npm run seo:install)
+
+staged=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^src/content/blog/.*\.(md|mdx)$')
+[ -z "$staged" ] && exit 0
+
+echo "🔎 새/변경된 글 description 점검 중..."
+# shellcheck disable=SC2086
+node scripts/seo-fill.mjs $staged
+
+# 채워진 변경분을 다시 스테이징
+echo "$staged" | while IFS= read -r f; do
+  [ -f "$f" ] && git add "$f"
+done
+
+exit 0
