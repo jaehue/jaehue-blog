@@ -1,5 +1,6 @@
 ---
 title: "우간다에서의 생각들"
+description: "8년 만에 다시 아프리카로 간다."
 date: 2018-02-15T09:42:36+08:00
 draft: false
 categories:

@@ -1,6 +1,6 @@
 ---
 title: "매일 변화하기"
-description: ""
+description: "최근 들어 4차 산업혁명이라는 말이 또다시 자주 들린다."
 date: "2018-12-20T22:51:16+08:00"
 thumbnail: ""
 categories:

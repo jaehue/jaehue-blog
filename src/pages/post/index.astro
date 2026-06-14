@@ -13,7 +13,7 @@ const grouped = posts.reduce((acc, post) => {
 }, {} as Record<string, typeof posts>);
 ---
 
-<BaseLayout title="글 — 장재휴">
+<BaseLayout title="글">
   <h1 class="text-2xl font-bold tracking-tight mt-4 mb-12">글</h1>
 
   {Object.entries(grouped)

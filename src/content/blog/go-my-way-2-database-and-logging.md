@@ -1,5 +1,6 @@
 ---
 title: "Go My Way #2 - 데이터베이스, 로깅"
+description: "Go My Way는 Go 언어로 웹 어플리케이션을 작성할 때 선호하는 나만의 방식을 3편에 걸쳐서 소개하는 글이다. 이전 글은 읽지 않았다면 아래 링크를 참조하기 바란다."
 draft: false
 date: "2017-06-14T00:00:00+08:00"
 categories:

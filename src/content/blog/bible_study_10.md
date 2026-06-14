@@ -1,6 +1,6 @@
 ---
 title: "Bible_study_10"
-description: ""
+description: "10과 강의를 시작하기 전에, 지금까지 공부했던 것을 복습하는 마음으로 7,8,9과 제목을 읽어봅시다"
 date: "2019-05-12T19:51:24+08:00"
 thumbnail: ""
 categories:

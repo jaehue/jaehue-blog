@@ -1,3 +1,15 @@
+// 사이트 전역 SEO 상수
+export const SITE = {
+  title: '장재휴',
+  description: '장재휴의 글 — 여행, 일, 사람, 믿음, 성찰에 대한 기록',
+  author: '장재휴',
+  url: 'https://jaehue.github.io',
+  locale: 'ko_KR',
+  // 글에 thumbnail이 없을 때 사용할 기본 OG 이미지(루트 기준 경로).
+  // /public 아래에 파일을 두면 자동 적용됩니다. 없으면 og:image 생략.
+  defaultOgImage: '',
+} as const;
+
 export const ESSAY_PARTS = [
   { part: 1, name: '여행', subtitle: '경상도 촌놈, 세상 밖으로 나가다' },
   { part: 2, name: '떠남', subtitle: '익숙한 곳을 벗어나다' },

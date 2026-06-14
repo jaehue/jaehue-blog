@@ -2,6 +2,7 @@
 date: "2016-09-21T22:04:23+08:00"
 draft: false
 title: "Microservice in PangPang"
+description: "올해 4월부터 micro-service를 지향하면서 일을 해 왔다. 사실 별로 커 보이지도 않는 기능들을 다양한 서비스로 나누고, 여러 팀에서 나누어 개발을 해 왔다."
 categories:
   - IT
 tags:

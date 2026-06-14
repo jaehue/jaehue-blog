@@ -1,6 +1,7 @@
 ---
 date: "2017-02-09T09:18:26+08:00"
 title: "Go My Way"
+description: "루비의 Ruby on Rails, 자바의 Spring, 파이썬의 Django, 노드의 Express. 대부분의 인기 있는 언어는 메인 프레임워크가 있다. 그래서 고민 없이 그 언어에 맞는 메인 프레임워크를 사용한다. 하지만 Go는 이런 게 없다."
 draft: true
 tags:
   - "golang"

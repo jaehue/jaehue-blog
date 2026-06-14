@@ -1,6 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Comments from '../components/Comments.tsx';
+import { SITE } from '../consts';
 
 interface Props {
   title: string;
@@ -8,19 +9,40 @@ interface Props {
   date: string;
   categories?: string[];
   tags?: string[];
+  thumbnail?: string;
   postSlug?: string;
 }
 
-const { title, description, date, categories = [], tags = [], postSlug } = Astro.props;
+const { title, description, date, categories = [], tags = [], thumbnail, postSlug } = Astro.props;
 
 const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
+const imageURL = thumbnail
+  ? new URL(thumbnail, Astro.site ?? SITE.url).href
+  : undefined;
+
+// 검색엔진용 구조화 데이터 (BlogPosting schema)
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  ...(description ? { description } : {}),
+  datePublished: new Date(date).toISOString(),
+  ...(imageURL ? { image: imageURL } : {}),
+  author: { '@type': 'Person', name: SITE.author },
+  publisher: { '@type': 'Person', name: SITE.author },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
+  ...(tags.length ? { keywords: tags.join(', ') } : {}),
+};
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} image={thumbnail} type="article">
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   <article class="mt-6">
     <header class="mb-10 pb-8 border-b border-(--color-border)">
       <h1 class="text-[2rem] font-bold leading-snug tracking-tight mb-3">{title}</h1>

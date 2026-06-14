@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 const { category, posts } = Astro.props;
 ---
 
-<BaseLayout title={`${category} — 장재휴`}>
+<BaseLayout title={`${category}`}>
   <h1 class="text-2xl font-bold mb-10">{category}</h1>
   <ul class="space-y-4">
     {posts.map((post: any) => {

@@ -14,7 +14,7 @@ const tagCounts = posts.reduce((acc, post) => {
 const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]);
 ---
 
-<BaseLayout title="태그 — 장재휴">
+<BaseLayout title="태그">
   <h1 class="text-2xl font-bold mb-10">태그</h1>
   <div class="flex flex-wrap gap-3">
     {sortedTags.map(([tag, count]) => (

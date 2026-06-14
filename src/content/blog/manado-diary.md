@@ -1,6 +1,6 @@
 ---
 title: "마나도에서의 생각들"
-description: ""
+description: "2019.02.03 인천공항에서 환승 대기 중"
 date: "2019-02-16T09:39:34+08:00"
 thumbnail: ""
 categories:
