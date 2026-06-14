@@ -1,6 +1,6 @@
 ---
 title: "Go언어로 안전한 서비스 만들기"
-description: "서비스를 만들때 비정상적으로 서비스가 종료되지 않고 안전하게 실행되도록 하는 것은 아주 중요하다(Resilency). 이번 포스트에서는 Resilency를 유지하면서 서비스를 작성하는 여러가지 방법에 대해서 소개하겠다."
+description: "Go로 안정적인(Resilient) 서비스를 만들기 위한 실전 가이드. nil-safe한 클린업과 채널·panic·recover·race condition 처리 같은 신중한 코딩부터 pprof 프로파일링, 타임아웃, 로깅, 버전 관리까지 서비스 상태를 파악하는 방법을 다룬다."
 date: 2015-08-15T00:00:00+09:00
 draft: false
 categories:

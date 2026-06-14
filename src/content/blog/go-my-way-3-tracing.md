@@ -2,7 +2,7 @@
 date: "2017-10-30T00:00:00+08:00"
 draft: false
 title: "Go My Way #3 - 트레이싱"
-description: "Go My Way는 Go 언어로 웹 어플리케이션을 작성할 때 선호하는 나만의 방식을 3편에 걸쳐서 소개하는 글이다. 이전 글은 읽지 않았다면 아래 링크를 참조하기 바란다."
+description: "50여 개 마이크로서비스 환경에서 오류 추적과 병목 파악이 어려워진 문제를 RequestID·ActionID·ParentActionID 기반 behavior log로 직접 풀어낸 트레이싱 구현 방법을 소개하는 Go My Way 3편."
 categories:
   - IT
 tags:

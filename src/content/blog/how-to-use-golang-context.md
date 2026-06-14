@@ -1,6 +1,6 @@
 ---
 title: "Go언어에서 Context 사용하기"
-description: "Go언어에서 Context 사용하기; golang"
+description: "Go의 context.Context로 맥락 안의 값을 전달하고, WithCancel과 WithTimeout으로 고루틴의 생명주기를 안전하게 제어하는 방법을 예제와 함께 설명하고, http.Request에서 컨텍스트가 활용되는 사례까지 다룬 글."
 date: "2018-06-19T00:00:00+09:00"
 thumbnail: ""
 draft: false
