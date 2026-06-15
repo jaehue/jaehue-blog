@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Search from '../components/Search.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -15,9 +14,39 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </p>
   </section>
 
-  <section class="mb-16">
-    <Search placeholder="글 검색…" />
+  <section class="mb-14">
+    <form action="/search" method="get" role="search" class="relative max-w-xs">
+      <svg aria-hidden="true" class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-(--color-text-muted)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        id="home-search"
+        type="search"
+        name="q"
+        placeholder="글 검색…"
+        autocomplete="off"
+        aria-label="블로그 글 검색"
+        class="w-full rounded-full border border-(--color-border) bg-(--color-surface) py-2 pl-9 pr-4 text-sm placeholder:text-(--color-text-muted) focus:outline-none focus:border-(--color-text-muted) transition-colors"
+      />
+    </form>
   </section>
+
+  <script is:inline>
+    (() => {
+      const input = document.getElementById('home-search');
+      if (!input) return;
+      let navigated = false;
+      const go = () => {
+        if (navigated) return;
+        navigated = true;
+        const q = input.value.trim();
+        // 입력하려고 포커스하는 즉시 전용 검색 페이지로 이동 (한글 IME 글자 유실 없음)
+        window.location.href = '/search' + (q ? '?q=' + encodeURIComponent(q) : '');
+      };
+      input.addEventListener('focus', go);
+    })();
+  </script>
 
   <section>
     <h2 class="text-xs font-medium text-(--color-text-muted) uppercase tracking-widest mb-8">최근 글</h2>
