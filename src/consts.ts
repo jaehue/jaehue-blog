@@ -8,6 +8,11 @@ export const SITE = {
   // 글에 thumbnail이 없을 때 사용할 기본 OG 이미지(루트 기준 경로).
   // /public 아래에 파일을 두면 자동 적용됩니다. 없으면 og:image 생략.
   defaultOgImage: '',
+  // 소셜 링크. 빈 문자열이면 해당 링크는 표시되지 않습니다.
+  social: {
+    facebook: 'https://www.facebook.com/bbugguj',
+    instagram: 'https://www.instagram.com/jaehue.jang/',
+  },
 } as const;
 
 export const ESSAY_PARTS = [
