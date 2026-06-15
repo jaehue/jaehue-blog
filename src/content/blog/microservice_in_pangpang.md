@@ -1,7 +1,7 @@
 ---
 date: "2016-09-21T22:04:23+08:00"
 draft: false
-title: "Microservice in PangPang"
+title: "마이크로서비스 적용기 — 단일 책임과 멀티테넌시 (Microservice)"
 description: "PangPang 프로젝트를 마이크로서비스로 진행하며 얻은 회고. 마이크로서비스는 화려한 기술의 조합이 아니라 각 서비스가 한 가지 일에 충실한 Single Responsibility와 멀티테넌시 사고의 전환이 핵심이라는 깨달음을 정리했다."
 categories:
   - IT

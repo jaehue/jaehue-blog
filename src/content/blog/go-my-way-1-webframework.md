@@ -1,6 +1,6 @@
 ---
 date: "2017-06-12T00:00:00+08:00"
-title: "Go My Way #1 - 웹 프레임워크"
+title: "Go 웹 프레임워크 선택기: echo — Go My Way #1"
 description: "Go로 웹 애플리케이션을 만들 때 메인 프레임워크로 echo를 선택한 이유와 패키지 구조, 그리고 negroni 조합과 go-kit, net/http를 거쳐 정착하기까지의 시행착오를 실무 경험을 바탕으로 정리한 Go My Way 1편."
 draft: false
 categories:

@@ -1,5 +1,5 @@
 ---
-title: "Go My Way #2 - 데이터베이스, 로깅"
+title: "Go 데이터베이스·로깅: xorm, logrus — Go My Way #2"
 description: "Go 웹 애플리케이션에서 xorm을 비롯한 DB 도구 비교와 미들웨어 기반 트랜잭션 처리, 그리고 logrus로 request_id를 담아 로그를 추적하는 방법까지, 데이터베이스와 로깅을 다루는 Go My Way 2편."
 draft: false
 date: "2017-06-14T00:00:00+08:00"

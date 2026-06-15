@@ -1,7 +1,7 @@
 ---
 date: "2017-10-30T00:00:00+08:00"
 draft: false
-title: "Go My Way #3 - 트레이싱"
+title: "Go 분산 트레이싱 직접 구현 — Go My Way #3"
 description: "50여 개 마이크로서비스 환경에서 오류 추적과 병목 파악이 어려워진 문제를 RequestID·ActionID·ParentActionID 기반 behavior log로 직접 풀어낸 트레이싱 구현 방법을 소개하는 Go My Way 3편."
 categories:
   - IT

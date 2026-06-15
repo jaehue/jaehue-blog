@@ -1,5 +1,5 @@
 ---
-title: "Go언어로 안전한 서비스 만들기"
+title: "Go로 안정적인(resilient) 서비스 만들기 — panic·recover, 타임아웃, pprof"
 description: "Go로 안정적인(Resilient) 서비스를 만들기 위한 실전 가이드. nil-safe한 클린업과 채널·panic·recover·race condition 처리 같은 신중한 코딩부터 pprof 프로파일링, 타임아웃, 로깅, 버전 관리까지 서비스 상태를 파악하는 방법을 다룬다."
 date: 2015-08-15T00:00:00+09:00
 draft: false
