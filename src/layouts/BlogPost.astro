@@ -43,7 +43,7 @@ const jsonLd = {
 
 <BaseLayout title={title} description={description} image={thumbnail} type="article">
   <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
-  <article class="mt-6">
+  <article class="mt-6" data-pagefind-body>
     <header class="mb-10 pb-8 border-b border-(--color-border)">
       <h1 class="text-[2rem] font-bold leading-snug tracking-tight mb-3">{title}</h1>
       <div class="flex items-center gap-3 text-sm text-(--color-text-muted)">
@@ -84,7 +84,11 @@ const jsonLd = {
       </div>
     )}
 
-    {postSlug && <Comments postSlug={postSlug} client:visible />}
+    {postSlug && (
+      <div data-pagefind-ignore>
+        <Comments postSlug={postSlug} client:visible />
+      </div>
+    )}
   </article>
 </BaseLayout>
 
