@@ -3,6 +3,11 @@ import BaseLayout from './BaseLayout.astro';
 import Comments from '../components/Comments.tsx';
 import { SITE } from '../consts';
 
+interface PostLink {
+  slug: string;
+  title: string;
+}
+
 interface Props {
   title: string;
   description?: string;
@@ -11,9 +16,11 @@ interface Props {
   tags?: string[];
   thumbnail?: string;
   postSlug?: string;
+  prev?: PostLink | null;
+  next?: PostLink | null;
 }
 
-const { title, description, date, categories = [], tags = [], thumbnail, postSlug } = Astro.props;
+const { title, description, date, categories = [], tags = [], thumbnail, postSlug, prev = null, next = null } = Astro.props;
 
 const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
   year: 'numeric',
@@ -82,6 +89,33 @@ const jsonLd = {
           ))}
         </div>
       </div>
+    )}
+
+    {(prev || next) && (
+      <nav class="mt-16 pt-8 border-t border-(--color-border) grid grid-cols-1 sm:grid-cols-2 gap-3" data-pagefind-ignore aria-label="글 둘러보기">
+        {prev ? (
+          <a
+            href={`/post/${prev.slug}`}
+            class="group flex flex-col gap-1.5 p-4 rounded-lg border border-(--color-border) hover:bg-(--color-surface) transition-colors"
+          >
+            <span class="text-xs text-(--color-text-muted) flex items-center gap-1">
+              <span aria-hidden="true">←</span> 이전 글
+            </span>
+            <span class="text-sm leading-snug group-hover:text-(--color-text) transition-colors line-clamp-2">{prev.title}</span>
+          </a>
+        ) : <span class="hidden sm:block" />}
+        {next ? (
+          <a
+            href={`/post/${next.slug}`}
+            class="group flex flex-col gap-1.5 p-4 rounded-lg border border-(--color-border) hover:bg-(--color-surface) transition-colors sm:text-right sm:items-end"
+          >
+            <span class="text-xs text-(--color-text-muted) flex items-center gap-1">
+              다음 글 <span aria-hidden="true">→</span>
+            </span>
+            <span class="text-sm leading-snug group-hover:text-(--color-text) transition-colors line-clamp-2">{next.title}</span>
+          </a>
+        ) : <span class="hidden sm:block" />}
+      </nav>
     )}
 
     {postSlug && (

@@ -3,14 +3,26 @@ import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: post,
-  }));
+  // 최신순(날짜 내림차순)으로 정렬 — 글 목록과 동일한 순서
+  const posts = (await getCollection('blog', ({ data }) => !data.draft))
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+  return posts.map((post, i) => {
+    // 더 최신 글(newer) / 더 예전 글(older)
+    const newer = i > 0 ? posts[i - 1] : null;
+    const older = i < posts.length - 1 ? posts[i + 1] : null;
+    return {
+      params: { slug: post.id },
+      props: {
+        post,
+        prev: older ? { slug: older.id, title: older.data.title } : null,
+        next: newer ? { slug: newer.id, title: newer.data.title } : null,
+      },
+    };
+  });
 }
 
-const post = Astro.props;
+const { post, prev, next } = Astro.props;
 const { Content } = await render(post);
 ---
 
@@ -22,6 +34,8 @@ const { Content } = await render(post);
   tags={post.data.tags}
   thumbnail={post.data.thumbnail}
   postSlug={post.id}
+  prev={prev}
+  next={next}
 >
   <Content />
 </BlogPost>
