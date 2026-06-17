@@ -6,7 +6,7 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host 0.0.0.0",
     "prebuild": "node scripts/seo-check.mjs",
     "build": "astro build",
     "postbuild": "pagefind --site dist",
