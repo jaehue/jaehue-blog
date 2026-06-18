@@ -26,14 +26,24 @@ const posts = basePostsOnly(await getCollection('blog', ({ data }) => !data.draf
         });
         return (
           <li>
-            <a href={`/post/${post.id}`} class="group block border border-(--color-border) rounded-lg p-5 bg-(--color-surface) hover:border-(--color-text-muted) transition-colors">
-              <h3 class="text-base font-medium leading-snug">
-                {post.data.title}
-              </h3>
-              {post.data.description && (
-                <p class="text-sm text-(--color-text-muted) mt-1.5 leading-relaxed line-clamp-1">{post.data.description}</p>
+            <a href={`/post/${post.id}`} class="group flex gap-4 border border-(--color-border) rounded-lg p-5 bg-(--color-surface) hover:border-(--color-text-muted) transition-colors">
+              {post.data.thumbnail && (
+                <img
+                  src={post.data.thumbnail}
+                  alt=""
+                  loading="lazy"
+                  class="w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-md object-cover bg-(--color-border)"
+                />
               )}
-              <time class="text-sm text-(--color-text-muted) mt-2 block">{date}</time>
+              <div class="min-w-0 flex-1">
+                <h3 class="text-base font-medium leading-snug">
+                  {post.data.title}
+                </h3>
+                {post.data.description && (
+                  <p class="text-sm text-(--color-text-muted) mt-1.5 leading-relaxed line-clamp-2">{post.data.description}</p>
+                )}
+                <time class="text-sm text-(--color-text-muted) mt-2 block">{date}</time>
+              </div>
             </a>
           </li>
         );

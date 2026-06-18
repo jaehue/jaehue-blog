@@ -101,6 +101,15 @@ const jsonLd = {
       </div>
     </header>
 
+    {thumbnail && (
+      <img
+        src={thumbnail}
+        alt={title}
+        class="w-full max-h-[420px] object-cover rounded-lg mb-10 bg-(--color-border)"
+        data-pagefind-ignore
+      />
+    )}
+
     <div class="blog-content" data-lang-body={DEFAULT_LANG}>
       <slot />
     </div>
