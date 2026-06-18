@@ -1,11 +1,24 @@
 ---
 import BlogPost from '../../layouts/BlogPost.astro';
 import { getCollection, render } from 'astro:content';
+import { basePostsOnly, translationsOf } from '../../lib/translations';
+import { LANGUAGES } from '../../consts';
 
 export async function getStaticPaths() {
-  // 최신순(날짜 내림차순)으로 정렬 — 글 목록과 동일한 순서
-  const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  const all = (await getCollection('blog', ({ data }) => !data.draft))
     .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+  // 번역본(`{slug}.{lang}.md`)은 단독 페이지를 만들지 않고, 이전/다음 글 계산에서도 제외
+  const posts = basePostsOnly(all);
+
+  // 이전/다음 글 링크: 번역본 제목까지 함께 담아 언어 전환 시 활용
+  const toNav = (entry) => {
+    if (!entry) return null;
+    const titles = {};
+    for (const [lang, e] of Object.entries(translationsOf(entry.id, all))) {
+      titles[lang] = e.data.title;
+    }
+    return { slug: entry.id, title: entry.data.title, titles };
+  };
 
   return posts.map((post, i) => {
     // 더 최신 글(newer) / 더 예전 글(older)
@@ -15,8 +28,8 @@ export async function getStaticPaths() {
       params: { slug: post.id },
       props: {
         post,
-        prev: older ? { slug: older.id, title: older.data.title } : null,
-        next: newer ? { slug: newer.id, title: newer.data.title } : null,
+        prev: toNav(older),
+        next: toNav(newer),
       },
     };
   });
@@ -24,6 +37,20 @@ export async function getStaticPaths() {
 
 const { post, prev, next } = Astro.props;
 const { Content } = await render(post);
+
+// 이 글의 번역본 수집 (파일명이 `{post.id}.{lang}` 인 글들)
+// draft: true 인 번역본은 작업 중으로 보고 스위처에서 제외
+const all = await getCollection('blog', ({ data }) => !data.draft);
+const translationEntries = translationsOf(post.id, all);
+const translations = [];
+for (const [lang, entry] of Object.entries(translationEntries)) {
+  translations.push({
+    lang,
+    label: LANGUAGES[lang] ?? lang,
+    title: entry.data.title,
+    Content: (await render(entry)).Content,
+  });
+}
 ---
 
 <BlogPost
@@ -36,6 +63,7 @@ const { Content } = await render(post);
   postSlug={post.id}
   prev={prev}
   next={next}
+  translations={translations}
 >
   <Content />
 </BlogPost>

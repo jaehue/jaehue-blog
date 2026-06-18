@@ -2,8 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { ESSAY_PARTS } from '../../consts';
+import { basePostsOnly } from '../../lib/translations';
 
-const posts = await getCollection('blog', ({ data }) => data.essay && !data.draft);
+const posts = basePostsOnly(await getCollection('blog', ({ data }) => data.essay && !data.draft));
 
 const grouped = ESSAY_PARTS.map((part) => ({
   ...part,

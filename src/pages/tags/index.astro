@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { basePostsOnly } from '../../lib/translations';
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = basePostsOnly(await getCollection('blog', ({ data }) => !data.draft));
 
 const tagCounts = posts.reduce((acc, post) => {
   (post.data.tags || []).forEach((tag) => {

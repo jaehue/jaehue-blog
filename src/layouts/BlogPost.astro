@@ -1,11 +1,19 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Comments from '../components/Comments.tsx';
-import { SITE } from '../consts';
+import { SITE, DEFAULT_LANG, LANGUAGES } from '../consts';
 
 interface PostLink {
   slug: string;
   title: string;
+  titles?: Record<string, string>;
+}
+
+interface Translation {
+  lang: string;
+  label: string;
+  title: string;
+  Content: any;
 }
 
 interface Props {
@@ -18,9 +26,12 @@ interface Props {
   postSlug?: string;
   prev?: PostLink | null;
   next?: PostLink | null;
+  translations?: Translation[];
 }
 
-const { title, description, date, categories = [], tags = [], thumbnail, postSlug, prev = null, next = null } = Astro.props;
+const { title, description, date, categories = [], tags = [], thumbnail, postSlug, prev = null, next = null, translations = [] } = Astro.props;
+const hasTranslations = translations.length > 0;
+const defaultLabel = LANGUAGES[DEFAULT_LANG] ?? DEFAULT_LANG;
 
 const formattedDate = new Date(date).toLocaleDateString('ko-KR', {
   year: 'numeric',
@@ -52,7 +63,26 @@ const jsonLd = {
   <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   <article class="mt-6" data-pagefind-body>
     <header class="mb-10 pb-8 border-b border-(--color-border)">
-      <h1 class="text-[2rem] font-bold leading-snug tracking-tight mb-3">{title}</h1>
+      {hasTranslations && (
+        <div class="flex justify-end mb-4" data-pagefind-ignore>
+          <div
+            class="inline-flex gap-0.5 p-0.5 rounded-full border border-(--color-border)"
+            data-lang-switch
+            data-default-lang={DEFAULT_LANG}
+            role="group"
+            aria-label="언어 선택 / Language"
+          >
+            <button type="button" class="lang-btn" data-lang-btn={DEFAULT_LANG}>{defaultLabel}</button>
+            {translations.map((t) => (
+              <button type="button" class="lang-btn" data-lang-btn={t.lang}>{t.label}</button>
+            ))}
+          </div>
+        </div>
+      )}
+      <h1 class="text-[2rem] font-bold leading-snug tracking-tight mb-3" data-lang-title={DEFAULT_LANG}>{title}</h1>
+      {translations.map((t) => (
+        <h1 class="text-[2rem] font-bold leading-snug tracking-tight mb-3 hidden" data-lang-title={t.lang} data-pagefind-ignore>{t.title}</h1>
+      ))}
       <div class="flex items-center gap-3 text-sm text-(--color-text-muted)">
         <time>{formattedDate}</time>
         {categories.length > 0 && (
@@ -71,9 +101,17 @@ const jsonLd = {
       </div>
     </header>
 
-    <div class="blog-content">
+    <div class="blog-content" data-lang-body={DEFAULT_LANG}>
       <slot />
     </div>
+    {translations.map((t) => {
+      const TranslatedContent = t.Content;
+      return (
+        <div class="blog-content hidden" data-lang-body={t.lang} data-pagefind-ignore>
+          <TranslatedContent />
+        </div>
+      );
+    })}
 
     {tags.length > 0 && (
       <div class="mt-16 pt-8 border-t border-(--color-border)">
@@ -96,23 +134,31 @@ const jsonLd = {
         {prev ? (
           <a
             href={`/post/${prev.slug}`}
+            data-nav="prev"
+            data-nav-slug={prev.slug}
+            data-nav-base={prev.title}
+            data-nav-titles={JSON.stringify(prev.titles ?? {})}
             class="group flex flex-col gap-1.5 p-4 rounded-lg border border-(--color-border) hover:bg-(--color-surface) transition-colors"
           >
             <span class="text-xs text-(--color-text-muted) flex items-center gap-1">
-              <span aria-hidden="true">←</span> 이전 글
+              <span aria-hidden="true">←</span> <span data-nav-label>이전 글</span>
             </span>
-            <span class="text-sm leading-snug group-hover:text-(--color-text) transition-colors line-clamp-2">{prev.title}</span>
+            <span class="text-sm leading-snug group-hover:text-(--color-text) transition-colors line-clamp-2" data-nav-title>{prev.title}</span>
           </a>
         ) : <span class="hidden sm:block" />}
         {next ? (
           <a
             href={`/post/${next.slug}`}
+            data-nav="next"
+            data-nav-slug={next.slug}
+            data-nav-base={next.title}
+            data-nav-titles={JSON.stringify(next.titles ?? {})}
             class="group flex flex-col gap-1.5 p-4 rounded-lg border border-(--color-border) hover:bg-(--color-surface) transition-colors sm:text-right sm:items-end"
           >
             <span class="text-xs text-(--color-text-muted) flex items-center gap-1">
-              다음 글 <span aria-hidden="true">→</span>
+              <span data-nav-label>다음 글</span> <span aria-hidden="true">→</span>
             </span>
-            <span class="text-sm leading-snug group-hover:text-(--color-text) transition-colors line-clamp-2">{next.title}</span>
+            <span class="text-sm leading-snug group-hover:text-(--color-text) transition-colors line-clamp-2" data-nav-title>{next.title}</span>
           </a>
         ) : <span class="hidden sm:block" />}
       </nav>
@@ -126,7 +172,92 @@ const jsonLd = {
   </article>
 </BaseLayout>
 
+<script>
+  // 다국어 전환. ?lang=xx 쿼리 파라미터로 진입 시 해당 언어로 바로 노출.
+  // 파일명 `{slug}.{lang}.md` 규칙으로 추가된 번역본을 자동으로 처리한다.
+  (function () {
+    const sw = document.querySelector('[data-lang-switch]');
+    if (!sw) return;
+
+    const DEFAULT = sw.getAttribute('data-default-lang') || 'ko';
+    const buttons = Array.from(sw.querySelectorAll('[data-lang-btn]'));
+    const langs = buttons.map((b) => b.getAttribute('data-lang-btn'));
+    const bodies = document.querySelectorAll('[data-lang-body]');
+    const titles = document.querySelectorAll('[data-lang-title]');
+
+    // 이전/다음 글 링크 라벨 (언어별)
+    const NAV = {
+      ko: { prev: '이전 글', next: '다음 글' },
+      mn: { prev: 'Өмнөх бичлэг', next: 'Дараах бичлэг' },
+      en: { prev: 'Previous', next: 'Next' },
+      ja: { prev: '前の記事', next: '次の記事' },
+      zh: { prev: '上一篇', next: '下一篇' },
+    };
+
+    // 언어 전환 시 하단 이전/다음 글을 해당 언어 번역본(있으면)의 제목·링크로 갱신
+    function updateNav(lang) {
+      document.querySelectorAll('[data-nav]').forEach((a) => {
+        const slug = a.getAttribute('data-nav-slug');
+        const base = a.getAttribute('data-nav-base') || '';
+        let navTitles = {};
+        try { navTitles = JSON.parse(a.getAttribute('data-nav-titles') || '{}'); } catch (e) {}
+        const hasTranslation = lang !== DEFAULT && navTitles[lang] != null;
+
+        const titleEl = a.querySelector('[data-nav-title]');
+        if (titleEl) titleEl.textContent = hasTranslation ? navTitles[lang] : base;
+        a.setAttribute('href', hasTranslation ? `/post/${slug}?lang=${lang}` : `/post/${slug}`);
+
+        const labelEl = a.querySelector('[data-nav-label]');
+        const kind = a.getAttribute('data-nav');
+        const labels = NAV[lang] || NAV[DEFAULT];
+        if (labelEl && labels) labelEl.textContent = labels[kind];
+      });
+    }
+
+    function setLang(lang) {
+      if (!langs.includes(lang)) lang = DEFAULT;
+      bodies.forEach((el) => el.classList.toggle('hidden', el.getAttribute('data-lang-body') !== lang));
+      titles.forEach((el) => el.classList.toggle('hidden', el.getAttribute('data-lang-title') !== lang));
+      buttons.forEach((b) => b.setAttribute('aria-current', b.getAttribute('data-lang-btn') === lang ? 'true' : 'false'));
+      document.documentElement.lang = lang;
+      updateNav(lang);
+
+      const url = new URL(window.location.href);
+      if (lang === DEFAULT) url.searchParams.delete('lang');
+      else url.searchParams.set('lang', lang);
+      history.replaceState(null, '', url);
+    }
+
+    const initial = new URLSearchParams(window.location.search).get('lang') || DEFAULT;
+    setLang(initial);
+
+    buttons.forEach((b) => b.addEventListener('click', () => setLang(b.getAttribute('data-lang-btn'))));
+  })();
+</script>
+
 <style is:global>
+  /* 언어 전환 버튼 */
+  .lang-btn {
+    font-size: 13px;
+    line-height: 1;
+    padding: 0.45em 0.95em;
+    border-radius: 9999px;
+    color: var(--color-text-muted);
+    background: transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .lang-btn:hover {
+    color: var(--color-text);
+  }
+
+  .lang-btn[aria-current='true'] {
+    background: var(--color-text);
+    color: #fff;
+  }
+
   .blog-content {
     font-size: 1rem;
     line-height: 1.8;

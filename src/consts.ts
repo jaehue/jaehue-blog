@@ -15,6 +15,19 @@ export const SITE = {
   },
 } as const;
 
+// 다국어 번역 지원.
+// 글 파일명을 `{slug}.{언어코드}.md` 로 만들면(예: 2026.06.15.mn.md)
+// 해당 글의 번역본으로 자동 인식되어, 원문 페이지 안에서 언어 전환으로 노출된다.
+// 번역본은 단독 페이지·목록·RSS·검색에서 자동 제외된다.
+export const DEFAULT_LANG = 'ko';
+export const LANGUAGES: Record<string, string> = {
+  ko: '한국어',
+  mn: 'Монгол',
+  en: 'English',
+  ja: '日本語',
+  zh: '中文',
+};
+
 export const ESSAY_PARTS = [
   { part: 1, name: '여행', subtitle: '경상도 촌놈, 세상 밖으로 나가다' },
   { part: 2, name: '떠남', subtitle: '익숙한 곳을 벗어나다' },
