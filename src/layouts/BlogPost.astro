@@ -380,12 +380,34 @@ const jsonLd = {
 
   .blog-content ul, .blog-content ol {
     margin: 1.25em 0;
-    padding-left: 1.75em;
+    padding-left: 1.5em;
+  }
+
+  .blog-content ul {
+    list-style: disc;
+  }
+
+  .blog-content ol {
+    list-style: decimal;
   }
 
   .blog-content li {
     margin-bottom: 0.5em;
     line-height: 1.85;
+    padding-left: 0.25em;
+  }
+
+  .blog-content li::marker {
+    color: var(--color-text-muted);
+  }
+
+  /* 중첩 목록 */
+  .blog-content li > ul, .blog-content li > ol {
+    margin: 0.5em 0;
+  }
+
+  .blog-content ul ul {
+    list-style: circle;
   }
 
   .blog-content strong {
