@@ -30,6 +30,8 @@ interface Props {
 }
 
 const { title, description, date, categories = [], tags = [], thumbnail, postSlug, prev = null, next = null, translations = [] } = Astro.props;
+const visibleCategories = categories.filter(Boolean);
+const visibleTags = tags.filter(Boolean);
 const hasTranslations = translations.length > 0;
 const defaultLabel = LANGUAGES[DEFAULT_LANG] ?? DEFAULT_LANG;
 
@@ -55,12 +57,12 @@ const jsonLd = {
   author: { '@type': 'Person', name: SITE.author },
   publisher: { '@type': 'Person', name: SITE.author },
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL },
-  ...(tags.length ? { keywords: tags.join(', ') } : {}),
+  ...(visibleTags.length ? { keywords: visibleTags.join(', ') } : {}),
 };
 ---
 
-<BaseLayout title={title} description={description} image={thumbnail} type="article">
-  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+<BaseLayout title={title} description={description} image={thumbnail} type="article" publishedTime={date} modifiedTime={date} tags={visibleTags}>
+  <script slot="head" type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
   <article class="mt-6" data-pagefind-body>
     <header class="mb-10 pb-8 border-b border-(--color-border)">
       {hasTranslations && (
@@ -85,15 +87,15 @@ const jsonLd = {
       ))}
       <div class="flex items-center gap-3 text-sm text-(--color-text-muted)">
         <time>{formattedDate}</time>
-        {categories.length > 0 && (
+        {visibleCategories.length > 0 && (
           <>
             <span class="text-(--color-border)">·</span>
-            {categories.map((cat, i) => (
+            {visibleCategories.map((cat, i) => (
               <>
                 <a href={`/categories/${encodeURIComponent(cat)}`} class="hover:text-(--color-text) transition-colors">
                   {cat}
                 </a>
-                {i < categories.length - 1 && <span>,</span>}
+                {i < visibleCategories.length - 1 && <span>,</span>}
               </>
             ))}
           </>
@@ -122,10 +124,10 @@ const jsonLd = {
       );
     })}
 
-    {tags.length > 0 && (
+    {visibleTags.length > 0 && (
       <div class="mt-16 pt-8 border-t border-(--color-border)">
         <div class="flex flex-wrap gap-2">
-          {tags.map((tag) => (
+          {visibleTags.map((tag) => (
             <a
               href={`/tags/${encodeURIComponent(tag)}`}
               class="text-[13px] px-2.5 py-1 bg-(--color-surface) rounded-full
